@@ -10,6 +10,11 @@ import "bootstrap/dist/css/bootstrap.min.css";
 function App() {
   const [cart, setCart] = useState([]);
   const [products, setProducts] = useState([]); // Ürünleri burada tutacağız
+  const [searchTerm, setSearchTerm] = useState("");
+  const filteredProducts = products.filter((product) =>
+    product.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+  
 
   // Sepete ürün ekleme
   const addToCart = (product) => {
@@ -75,7 +80,8 @@ function App() {
   return (
     <Router>
       <div className="app">
-        <Navbar />
+      <Navbar totalPrice={totalPrice} setSearchTerm={setSearchTerm} />
+
         <div className="main-content d-flex flex-column flex-md-row">
           {/* Sidebar */}
           <div className="sidebar col-12 col-md-3">
@@ -87,9 +93,10 @@ function App() {
             <Routes>
               {/* Ürün Listesi */}
               <Route
-                path="/"
-                element={<ProductList products={products} onAddToCart={addToCart} />}
+               path="/"
+               element={<ProductList products={filteredProducts} onAddToCart={addToCart} />}
               />
+
 
               {/* Ürün Detay Sayfası */}
               <Route

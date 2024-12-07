@@ -1,39 +1,55 @@
-import React from "react";
+import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCartShopping, faSearch, faUser} from "@fortawesome/free-solid-svg-icons";
+import { faCartShopping, faSearch, faUser } from "@fortawesome/free-solid-svg-icons";
 
-function Navbar() {
+function Navbar({ totalPrice, setSearchTerm }) {
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value);
+    setSearchTerm(e.target.value); // Arama terimini parent component'e gönderir
+  };
+
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    // Arama submit işlemleri burada yapılabilir
+  };
+
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-primary">
-      <div className="container-fluid">
-        {/* Logo */}
+      <div className="container">
         <a className="navbar-brand" href="#">
           Eteration
         </a>
 
-        {/* Search */}
-        <div className="d-flex">
+        {/* Arama Barı */}
+        <form className="d-flex mx-auto" style={{ width: "50%" }} onSubmit={handleSearchSubmit}>
           <input
-            className="form-control border-0"
+            className="form-control"
             type="search"
             placeholder="Search"
             aria-label="Search"
-            style={{borderRadius: "0px 0 0 0px"}} // Köşe yuvarlama
+            value={searchQuery}
+            onChange={handleSearchChange} // Input değeri değiştiğinde setSearchTerm çağrılır
+            style={{ borderRadius: "0px 0 0 0px" }}
           />
-          <button className="btn btn-light" type="submit" style={{borderRadius: "0 0px 0px 0"}}> {/* Button'ın kenarlarını yuvarla */}
+          <button
+            className="btn btn-light"
+            type="submit"
+            style={{ borderRadius: "0 0px 0px 0" }}
+          >
             <FontAwesomeIcon icon={faSearch} />
           </button>
-        </div>
+        </form>
 
-        {/* Kullanıcı ve Toplam Fiyat */}
-        <div className="d-flex align-items-center ms-3">
-          {/* Total Price */}
-          <div className="navbar-text me-3">
+        <div className="d-flex align-items-center">
+          {/* Toplam Fiyat */}
+          <div className="navbar-text me-4">
             <FontAwesomeIcon icon={faCartShopping} className="me-2" />
-            Total: <strong>117,000₺</strong>
+            Total: <strong>{totalPrice.toFixed(2)}₺</strong>
           </div>
 
-          {/* Kullanıcı */}
+          {/* Kullanıcı Bilgisi */}
           <div className="navbar-text">
             <FontAwesomeIcon icon={faUser} className="me-2 text-white" />
             Mine
