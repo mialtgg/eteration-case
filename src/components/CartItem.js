@@ -14,7 +14,7 @@ const CartItem = ({ item, onRemove, onUpdateQuantity }) => {
   };
 
   return (
-    <li className="list-group-item d-flex justify-content-between align-items-center">
+    <li className="d-flex justify-content-between align-items-center">
       <div>
         <h6>{item.name}</h6>
         <small>
@@ -25,7 +25,7 @@ const CartItem = ({ item, onRemove, onUpdateQuantity }) => {
       <div className="d-flex align-items-center">
         {/* Decrease Button */}
         <button
-          className="btn btn-sm btn-secondary me-2"
+          className="btn btn-sm btn-secondary "
           onClick={handleDecrease}
         >
           -
@@ -47,7 +47,7 @@ const CartItem = ({ item, onRemove, onUpdateQuantity }) => {
 
         {/* Increase Button */}
         <button
-          className="btn btn-sm btn-secondary me-2"
+          className="btn btn-sm btn-secondary "
           onClick={handleIncrease}
         >
           +
