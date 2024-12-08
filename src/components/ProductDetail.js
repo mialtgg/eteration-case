@@ -18,20 +18,24 @@ const ProductDetail = ({ products, onAddToCart }) => {
     : product.description;
 
   return (
-    <div className="container mt-5">
+    <div className="container mt-4">
       <div className="row d-flex justify-content-center">
         {/* Kartın genişliğini artırdık: col-md-10 */}
         <div className="col-md-10">
           <div className="card shadow-sm">
             <div className="row no-gutters">
               {/* Sol taraf: Ürün Resmi */}
-              <div className="col-md-6">
-                <img
-                  src={product.image}
-                  alt={product.name}
-                  className="card-img img-fluid rounded-start" // Updated class name
-                />
-              </div>
+              <div className="col-md-6 d-flex justify-content-center">
+  <div className="d-flex justify-content-center align-items-center w-100">
+    <img
+      src={product.image}
+      alt={product.name}
+      className="card-img img-fluid ml-3"
+    />
+  </div>
+</div>
+
+
 
               {/* Sağ taraf: Ürün Detayları */}
               <div className="col-md-6 d-flex flex-column justify-content-between p-4">
