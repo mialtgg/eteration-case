@@ -6,15 +6,17 @@ import ProductList from "./components/ProductList";
 import Cart from "./components/Cart";
 import ProductDetail from "./components/ProductDetail"; // Detay sayfası için import
 import "bootstrap/dist/css/bootstrap.min.css";
+import "./App.css"; // CSS dosyasını ekliyoruz
 
 function App() {
   const [cart, setCart] = useState([]);
   const [products, setProducts] = useState([]); // Ürünleri burada tutacağız
   const [searchTerm, setSearchTerm] = useState("");
+
+  // Ürünleri filtreleme
   const filteredProducts = products.filter((product) =>
     product.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
-  
 
   // Sepete ürün ekleme
   const addToCart = (product) => {
@@ -77,37 +79,58 @@ function App() {
     fetchProducts();
   }, []);
 
+  // Sepeti localStorage'a kaydet
+  useEffect(() => {
+    if (cart.length > 0) {
+      localStorage.setItem("cart", JSON.stringify(cart));
+    }
+  }, [cart]);
+
+  // localStorage'tan sepeti yükle
+  useEffect(() => {
+    const savedCart = JSON.parse(localStorage.getItem("cart"));
+    if (savedCart) {
+      setCart(savedCart);
+    }
+  }, []);
+
   return (
     <Router>
       <div className="app">
-      <Navbar totalPrice={totalPrice} setSearchTerm={setSearchTerm} />
+        {/* Navbar */}
+        <Navbar totalPrice={totalPrice} setSearchTerm={setSearchTerm} />
 
+        {/* Ana İçerik */}
         <div className="main-content d-flex flex-column flex-md-row">
-          {/* Sidebar */}
-          <div className="sidebar col-12 col-md-3">
-            <Sidebar />
-          </div>
-
-          {/* Router ile İçerik */}
-          <div className="product-list col-12 col-md-6">
+          {/* Ürün Listesi ve Sayfa İçeriği */}
+          <div className="product-list col-12 col-md-8">
             <Routes>
               {/* Ürün Listesi */}
               <Route
-               path="/"
-               element={<ProductList products={filteredProducts} onAddToCart={addToCart} />}
+                path="/"
+                element={
+                  <ProductList
+                    products={filteredProducts}
+                    onAddToCart={addToCart}
+                  />
+                }
               />
-
 
               {/* Ürün Detay Sayfası */}
               <Route
                 path="/product/:id"
-                element={<ProductDetail products={products} onAddToCart={addToCart} />}
+                element={
+                  <ProductDetail
+                    products={products}
+                    onAddToCart={addToCart}
+                  />
+                }
               />
             </Routes>
           </div>
 
           {/* Sepet */}
-          <div className="cart col-12 col-md-3">
+          <div className="col-12 col-md-2">
             <Cart
               cart={cart}
               onRemove={removeFromCart}

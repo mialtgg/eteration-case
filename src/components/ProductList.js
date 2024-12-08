@@ -3,13 +3,11 @@ import ProductCard from "./ProductCard";
 import Pagination from "./Pagination";
 
 const ProductList = ({ products: initialProducts, onAddToCart }) => {
-  const [fetchedProducts, setFetchedProducts] = useState(initialProducts); // Props'tan gelen veriyi alıyoruz
+  const [fetchedProducts, setFetchedProducts] = useState(initialProducts);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
-  // Pagination için state
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 12; // Her sayfada gösterilecek ürün sayısı
+  const itemsPerPage = 12;
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -21,7 +19,7 @@ const ProductList = ({ products: initialProducts, onAddToCart }) => {
           throw new Error("Veriler alınamadı!");
         }
         const data = await response.json();
-        setFetchedProducts(data); // Veriyi burada kaydediyoruz
+        setFetchedProducts(data);
         setLoading(false);
       } catch (err) {
         setError(err.message);
@@ -30,37 +28,34 @@ const ProductList = ({ products: initialProducts, onAddToCart }) => {
     };
 
     if (!initialProducts || initialProducts.length === 0) {
-      fetchProducts(); // Eğer dışarıdan veri gelmediyse, API'den veri çekiyoruz
+      fetchProducts();
     } else {
-      setFetchedProducts(initialProducts); // Props'tan gelen veriyi state'e kaydediyoruz
-      setLoading(false); // Veri zaten geldiği için loading'i false yapıyoruz
+      setFetchedProducts(initialProducts);
+      setLoading(false);
     }
-  }, [initialProducts]); // Eğer props değişirse yeniden çalışacak
+  }, [initialProducts]);
 
   if (loading) return <p>Yükleniyor...</p>;
   if (error) return <p>Hata: {error}</p>;
 
-  // Pagination işlemleri
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentProducts = fetchedProducts.slice(indexOfFirstItem, indexOfLastItem);
 
-  // Sayfa değişim fonksiyonu
   const handlePageChange = (pageNumber) => setCurrentPage(pageNumber);
 
   return (
-    <div>
-      <div className="row" style={{ marginTop: "20px", marginBottom: "40px" }}>
+    <div className="container">
+      <div className="row justify-content-center" style={{ marginTop: "20px", marginBottom: "40px" }}>
         {currentProducts.map((product) => (
           <div className="col-md-3 mb-4" key={product.id}>
             <ProductCard product={product} onAddToCart={onAddToCart} />
           </div>
         ))}
       </div>
-      {/* Pagination */}
       <Pagination
         itemsPerPage={itemsPerPage}
-        totalItems={fetchedProducts.length}  
+        totalItems={fetchedProducts.length}
         currentPage={currentPage}
         onPageChange={handlePageChange}
       />

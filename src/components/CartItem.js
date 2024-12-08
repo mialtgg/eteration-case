@@ -14,42 +14,25 @@ const CartItem = ({ item, onRemove, onUpdateQuantity }) => {
   };
 
   return (
-    <li className="d-flex justify-content-between align-items-center">
-      <div>
-        <h6>{item.name}</h6>
-        <small>
-          {item.price}₺
-        </small>
+    <li className="d-flex flex-column flex-sm-row justify-content-between align-items-center mb-3">
+      <div className="d-flex flex-column text-center text-sm-start mb-2 mb-sm-0">
+        {/* Name and Price Section */}
+        <small className="text-secondary">{item.name}</small>
+        <small className="text-primary">{item.price}₺</small>
       </div>
 
-      <div className="d-flex align-items-center">
+      {/* Quantity Control Section */}
+      <div className="d-flex align-items-center ">
         {/* Decrease Button */}
-        <button
-          className="btn btn-sm btn-secondary "
-          onClick={handleDecrease}
-        >
+        <button className="btn btn-sm btn-secondary" onClick={handleDecrease}>
           -
         </button>
 
         {/* Quantity Display with Blue Background */}
-        <div
-          className="quantity-display d-flex justify-content-center align-items-center"
-          style={{
-            backgroundColor: 'blue',
-            color: 'white',
-            width: '30px',
-            height: '30px',            
-            margin: '0 10px'
-          }}
-        >
-          {item.quantity}
-        </div>
+        <div className="btn btn-sm btn-primary">{item.quantity}</div>
 
         {/* Increase Button */}
-        <button
-          className="btn btn-sm btn-secondary "
-          onClick={handleIncrease}
-        >
+        <button className="btn btn-sm btn-secondary" onClick={handleIncrease}>
           +
         </button>
       </div>

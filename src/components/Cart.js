@@ -3,10 +3,12 @@ import CartItem from "./CartItem";
 
 const Cart = ({ cart, onRemove, totalPrice, onUpdateQuantity }) => {
   return (
-    <div className="border p-3">
+    
+    <div className="p-2 mt-3">
+      
       {/* Sepet Ürünleri */}
-      <div className="cart-items mb-4 p-3 border">
-        <h2>Sepet</h2>
+      <div className="cart-items mb-6 p-3 border">
+    
         {cart.length === 0 ? (
           <p>Sepetiniz boş.</p>
         ) : (
@@ -22,12 +24,20 @@ const Cart = ({ cart, onRemove, totalPrice, onUpdateQuantity }) => {
           </ul>
         )}
       </div>
+      <div className="total-price p-3 border mt-2 d-flex flex-column" >
+  <div className="w-100 text-start mb-2">
+    <small>Total Price: <span className="fw-bold text-primary">{totalPrice}₺</span></small>
+  </div>
+  {cart.length > 0 && (
+    <button className="btn btn-primary btn-sm w-100">Checkout</button>
+  )}
+</div>
 
-      {/* Ödeme Yap */}
-      <div className="total-price p-3 border-top">
-        <h5>Toplam Fiyat: {totalPrice}₺</h5>
-        {cart.length > 0 && <button className="btn btn-success w-100">Ödeme Yap</button>}
-      </div>
+
+
+     
+      
+
     </div>
   );
 };
