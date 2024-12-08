@@ -1,74 +1,102 @@
-import React from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSearch } from "@fortawesome/free-solid-svg-icons";
+import React, { useState, useEffect } from "react";
+import { Card, Form, Row, Col } from "react-bootstrap";
 
-function Sidebar() {
+function Sidebar({ onChange }) {
+  const [sortOption, setSortOption] = useState("");
+  const [selectedBrands, setSelectedBrands] = useState([]);
+  const [brands, setBrands] = useState([]);
+
+  useEffect(() => {
+    const fetchBrands = async () => {
+      try {
+        const response = await fetch("https://5fc9346b2af77700165ae514.mockapi.io/products");
+        if (!response.ok) {
+          throw new Error("Veriler alınamadı!");
+        }
+        const data = await response.json();
+        const uniqueBrands = [...new Set(data.map((product) => product.brand))];
+        setBrands(uniqueBrands);
+      } catch (error) {
+        console.error("Hata:", error.message);
+      }
+    };
+
+    fetchBrands();
+  }, []);
+
+  const handleSortChange = (e) => {
+    const newSortOption = e.target.value;
+    setSortOption(newSortOption);
+    onChange({ sortOption: newSortOption, selectedBrands }); // 'onChange' ile güncelle
+  };
+
+  const handleBrandChange = (e) => {
+    const brand = e.target.value;
+    const isChecked = e.target.checked;
+
+    const updatedBrands = isChecked
+      ? [...selectedBrands, brand]
+      : selectedBrands.filter((b) => b !== brand);
+
+    setSelectedBrands(updatedBrands);
+    onChange({ sortOption, selectedBrands: updatedBrands }); // 'onChange' ile güncelle
+  };
+
   return (
-    <div className="d-none d-md-block p-3 bg-light border-end" style={{ width: "250px", borderRadius: "0", boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)" }}>
-      {/* Sort By Section (Radio Button) */}
-      <div className="mb-3">
-        <h6 className="text-muted" style={{ opacity: 0.7 }}>Sort By</h6>
-        <div className="card" style={{ borderRadius: "0", boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)" }}>
-          <div className="card-body">
-            <div className="form-check">
-              <input className="form-check-input" type="radio" name="sort" id="newest" />
-              <label className="form-check-label" htmlFor="newest">New to Old</label>
-            </div>
-            <div className="form-check">
-              <input className="form-check-input" type="radio" name="sort" id="oldest" />
-              <label className="form-check-label" htmlFor="oldest">Old to New</label>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Brands Section (Checkbox List) */}
-      <div className="mb-3">
-        <h6 className="text-muted" style={{ opacity: 0.7 }}>Brands</h6>
-        <div className="card" style={{ borderRadius: "0", boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)" }}>
-          <div className="card-body p-0">
-            {/* Brands Search with Icon inside */}
-            <div className="p-2">
-              <div className="input-group">
-                <input
-                  type="search"
-                  className="form-control"
-                  placeholder="Search Brands"
-                  aria-label="Search"
+    <div>
+      <Row>
+        <Col className="mb-3 mt-4 ps-4">
+          <Card style={{ maxHeight: "300px", overflowY: "auto" }}>
+            <Card.Body>
+              <h6>Sort By</h6>
+              <Form>
+                <Form.Check
+                  type="radio"
+                  id="newest"
+                  value="newest"
+                  name="sort"
+                  label="New to Old"
+                  onChange={handleSortChange}
+                  checked={sortOption === "newest"} // Seçilen değeri kontrol et
                 />
-                <span className="input-group-text bg-white border-start-0" style={{ borderRadius: "0", cursor: "pointer" }}>
-                  <FontAwesomeIcon icon={faSearch} />
-                </span>
-              </div>
-            </div>
+                <Form.Check
+                  type="radio"
+                  id="oldest"
+                  value="oldest"
+                  name="sort"
+                  label="Old to New"
+                  onChange={handleSortChange}
+                  checked={sortOption === "oldest"} // Seçilen değeri kontrol et
+                />
+              </Form>
+            </Card.Body>
+          </Card>
+        </Col>
 
-            {/* Brands List with Scroll (Checkbox) */}
-            <div className="p-2" style={{ maxHeight: "150px", overflowY: "auto" }}>
-              {/* Checkbox List */}
-              <div className="form-check">
-                <input type="checkbox" id="apple" className="form-check-input" />
-                <label className="ms-2 form-check-label" htmlFor="apple">Apple</label>
+        <Col className="mb-3 mt-4 ps-4">
+          <Card style={{ maxHeight: "300px", overflowY: "auto" }}>
+            <Card.Body>
+              <h6>Brands</h6>
+              <div>
+                {brands.length === 0 ? (
+                  <p>Yükleniyor...</p>
+                ) : (
+                  brands.map((brand, index) => (
+                    <Form.Check
+                      key={index}
+                      type="checkbox"
+                      value={brand}
+                      label={brand}
+                      onChange={handleBrandChange}
+                      checked={selectedBrands.includes(brand)} // Seçili markayı kontrol et
+                    />
+                  ))
+                )}
               </div>
-              <div className="form-check">
-                <input type="checkbox" id="samsung" className="form-check-input" />
-                <label className="ms-2 form-check-label" htmlFor="samsung">Samsung</label>
-              </div>
-              <div className="form-check">
-                <input type="checkbox" id="xiaomi" className="form-check-input" />
-                <label className="ms-2 form-check-label" htmlFor="xiaomi">Xiaomi</label>
-              </div>
-              <div className="form-check">
-                <input type="checkbox" id="lg" className="form-check-input" />
-                <label className="ms-2 form-check-label" htmlFor="lg">LG</label>
-              </div>
-              <div className="form-check">
-                <input type="checkbox" id="huawei" className="form-check-input" />
-                <label className="ms-2 form-check-label" htmlFor="huawei">Huawei</label>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+            </Card.Body>
+          </Card>
+        </Col>
+      </Row>
     </div>
   );
 }

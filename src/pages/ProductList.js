@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
-import ProductCard from "./ProductCard";
-import Pagination from "./Pagination";
+import ProductCard from "../components/ProductCard";
+import Pagination from "../components/Pagination";
+import { fetchProducts } from "../services/productService";  
 
 const ProductList = ({ products: initialProducts, onAddToCart }) => {
   const [fetchedProducts, setFetchedProducts] = useState(initialProducts);
@@ -10,15 +11,9 @@ const ProductList = ({ products: initialProducts, onAddToCart }) => {
   const itemsPerPage = 12;
 
   useEffect(() => {
-    const fetchProducts = async () => {
+    const fetchData = async () => {
       try {
-        const response = await fetch(
-          "https://5fc9346b2af77700165ae514.mockapi.io/products"
-        );
-        if (!response.ok) {
-          throw new Error("Veriler alınamadı!");
-        }
-        const data = await response.json();
+        const data = await fetchProducts();  // Servisten veri alıyoruz
         setFetchedProducts(data);
         setLoading(false);
       } catch (err) {
@@ -28,7 +23,7 @@ const ProductList = ({ products: initialProducts, onAddToCart }) => {
     };
 
     if (!initialProducts || initialProducts.length === 0) {
-      fetchProducts();
+      fetchData();  // Eğer başlangıçta ürünler yoksa, API'den çekiyoruz
     } else {
       setFetchedProducts(initialProducts);
       setLoading(false);

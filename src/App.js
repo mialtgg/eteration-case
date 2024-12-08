@@ -2,13 +2,23 @@ import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Sidebar from "./components/Sidebar";
-import ProductList from "./components/ProductList";
+import ProductList from "./pages/ProductList";
 import Cart from "./components/Cart";
-import ProductDetail from "./components/ProductDetail"; // Detay sayfası için import
+import ProductDetail from "./pages/ProductDetail"; // Detay sayfası için import
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css"; // CSS dosyasını ekliyoruz
 
 function App() {
+  const [filterData, setFilterData] = useState({
+    sortOption: "",
+    selectedBrands: [],
+  });
+
+  // onChange fonksiyonunu tanımlıyoruz
+  const handleFilterChange = (newFilterData) => {
+    console.log(newFilterData); // Yeni filtre verisini loglayabiliriz
+    setFilterData(newFilterData); // Filtreyi state'e kaydediyoruz
+  };
   const [cart, setCart] = useState([]);
   const [products, setProducts] = useState([]); // Ürünleri burada tutacağız
   const [searchTerm, setSearchTerm] = useState("");
@@ -97,12 +107,15 @@ function App() {
   return (
     <Router>
       <div className="app">
+       
         {/* Navbar */}
         <Navbar totalPrice={totalPrice} setSearchTerm={setSearchTerm} />
 
         {/* Ana İçerik */}
         <div className="main-content d-flex flex-column flex-md-row">
-          {/* Ürün Listesi ve Sayfa İçeriği */}
+         
+        <Sidebar onChange={handleFilterChange} /> 
+
           <div className="product-list col-12 col-md-8">
             <Routes>
               {/* Ürün Listesi */}
@@ -118,6 +131,7 @@ function App() {
 
               {/* Ürün Detay Sayfası */}
               <Route
+              
                 path="/product/:id"
                 element={
                   <ProductDetail
