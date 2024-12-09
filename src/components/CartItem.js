@@ -29,10 +29,10 @@ const CartItem = ({ item, onRemove, onUpdateQuantity }) => {
         </button>
 
         {/* Quantity Display with Blue Background */}
-        <div className="btn btn-sm btn-primary">{item.quantity}</div>
+        <div className="btn btn-sm btn-primary" aria-label="Decrease quantity">{item.quantity}</div>
 
         {/* Increase Button */}
-        <button className="btn btn-sm btn-secondary" onClick={handleIncrease}>
+        <button className="btn btn-sm btn-secondary" onClick={handleIncrease} aria-label="Increase quantity">
           +
         </button>
       </div>
