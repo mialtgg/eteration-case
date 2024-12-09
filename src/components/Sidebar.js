@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { Card, Form, Row, Col } from "react-bootstrap";
-
 function Sidebar({ onChange }) {
   const [sortOption, setSortOption] = useState("");
   const [selectedBrands, setSelectedBrands] = useState([]);
@@ -27,7 +26,8 @@ function Sidebar({ onChange }) {
   const handleSortChange = (e) => {
     const newSortOption = e.target.value;
     setSortOption(newSortOption);
-    onChange({ sortOption: newSortOption, selectedBrands }); // 'onChange' ile güncelle
+   
+    onChange({ sortOption: newSortOption, selectedBrands });
   };
 
   const handleBrandChange = (e) => {
@@ -39,7 +39,8 @@ function Sidebar({ onChange }) {
       : selectedBrands.filter((b) => b !== brand);
 
     setSelectedBrands(updatedBrands);
-    onChange({ sortOption, selectedBrands: updatedBrands }); // 'onChange' ile güncelle
+    // 'onChange' ile güncelleme yapılır
+    onChange({ sortOption, selectedBrands: updatedBrands });
   };
 
   return (

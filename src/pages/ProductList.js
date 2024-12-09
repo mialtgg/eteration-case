@@ -17,7 +17,7 @@ const ProductList = ({ products: initialProducts, onAddToCart }) => {
         setFetchedProducts(data);
         setLoading(false);
       } catch (err) {
-        setError(err.message);ßß
+        setError(err.message);
         setLoading(false);
       }
     };

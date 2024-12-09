@@ -1,6 +1,6 @@
 import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
-import CartItem from "./CartItem";
+import CartItem from "../components/CartItem";
 
 describe("CartItem Component", () => {
   const mockOnRemove = jest.fn();

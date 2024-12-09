@@ -13,6 +13,9 @@ function App() {
     sortOption: "",
     selectedBrands: [],
   });
+  const handleSidebarChange = (filterOptions) => {
+    console.log(filterOptions); // Gelen veriyi burada kontrol edebilirsiniz
+  };
 
   // onChange fonksiyonunu tanımlıyoruz
   const handleFilterChange = (newFilterData) => {
@@ -114,7 +117,7 @@ function App() {
         {/* Ana İçerik */}
         <div className="main-content d-flex flex-column flex-md-row">
          
-        <Sidebar onChange={handleFilterChange} /> 
+        <Sidebar onChange={handleSidebarChange} />
 
           <div className="product-list col-12 col-md-8">
             <Routes>
